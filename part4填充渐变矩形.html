@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>填充渐变矩形</title>
+
+    <style>
+        .content {
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        canvas {
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="linearGradient"></div>
+        <canvas width="600" height="400"></canvas>
+    </div>
+    <script>
+
+        var myCanvas = document.querySelector('canvas');
+        var ctx = myCanvas.getContext('2d');
+        // x0,y0,起始点,x1,y1结束点
+        var linearGradient=ctx.createLinearGradient(100,100,500,200);
+        linearGradient.addColorStop(0,'pink');
+        linearGradient.addColorStop(1,'blue');
+        ctx.fillStyle = linearGradient;
+        // fillRect(x,y,w,h)
+        ctx.fillRect(100,100,400,100);
+
+    </script>
+</body>
+
+</html>
