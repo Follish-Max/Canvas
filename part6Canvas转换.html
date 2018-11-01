@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas转换</title>
+    <style>
+     canvas {
+         border:1px solid #ccc;
+     }
+    </style>
+</head>
+<body>
+    <canvas width="600" height="400"></canvas>
+    <script>
+    var myCanvas = document.querySelector('canvas');
+    var ctx = myCanvas.getContext('2d');
+
+    var startAngle = 0;
+    ctx.translate(150,150);
+    setInterval(function(){
+        // 旋转角度
+        startAngle += Math.PI/180;
+        //参数表示旋转角度
+        ctx.rotate(startAngle);
+        //x0,y0是旋转中心 x1,y1为长宽
+        ctx.strokeRect(-100,-100,100,100);
+    },500);
+    </script>
+</body>
+</html>
