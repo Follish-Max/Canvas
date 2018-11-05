@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="-UA-Compatible" content="ie=edge">
+    <title>行走的小人</title>
+    <style>
+        canvas {
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="600" height="400"></canvas>
+    <script>
+        var Person = function (ctx) {
+            // 绘制工具
+            this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+            this.src = 'images/04.png';
+            // 画布大小
+            this.canvasWidth = this.ctx.canvas.width;
+            this.canvasHeight = this.ctx.canvas.height;
+            // 行走的相关参数
+            this.stepSize = 10;
+            // 方向：0前 1左 2右 3后
+            // X轴方向的偏移步数
+            this.stepX = 0;
+            //y轴的偏移步数
+            this.stepY = 0;
+            //初始化方法
+            this.init();
+        }
+        Person.prototype.init = function () {
+            var that = this;
+            // 加载图片
+            this.loadImage(function (image) {
+                // 图片大小
+                that.imageWidth = image.width;
+                that.imageHeight = image.height;
+                //人物的大小
+                that.personWidth = that.imageWidth / 4;
+                that.personHeight = that.imageHeight / 4;
+                //画布的中心，即绘制图片的起点
+                that.x0 = that.canvasWidth / 2 -that.personWidth / 2;
+                that.y0 = that.canvasHeight / 2 -that.personHeight / 2;
+                //绘制在中心，正面朝外
+                that.ctx.drawImage(image,
+                //起始坐标
+                0,0,
+                //剪切图像宽高
+                that.personWidth,that.personHeight,
+                //在画布的位置
+                that.x0,that.y0,
+                //要使用的图片的宽高
+                that.personWidth,that.personHeight);
+                //通过方向键控制人物行走
+                that.index = 0;
+                document.onkeydown = function (e) {
+                    if(e.keyCode == 40){
+                        that.direction = 0;
+                        that.stepY ++;
+                        that.drawImage(image);
+                        // 前
+                    }else if(e.keyCode == 37){
+                        that.direction = 1;
+                        that.stepX --;
+                        that.drawImage(image);
+                        //左
+
+                    }else if(e.keyCode == 39){
+                        that.direction = 2;
+                        that.stepX ++;
+                        that.drawImage(image);
+                        //右
+
+                    }else if(e.keyCode == 38){
+                        that.direction = 3;
+                        that.stepY --;
+                        that.drawImage(image);
+                        //后
+
+                    }
+                }
+            });
+
+
+        }
+        // 加载图片
+        Person.prototype.loadImage = function (callback) {
+            var image = new Image();
+            image.onload = function () {
+                callback && callback(image);
+            };
+            image.src = this.src;
+        };
+        //绘制图片
+        Person.prototype.drawImage = function (image) {
+            this.index ++;
+            this.ctx.clearRect(0,0,this.canvasWidth,this.canvasHeight);
+            this.ctx.drawImage(image,
+            this.index * this.personWidth,this.direction * this.personHeight,
+            this.personWidth,this.personHeight,
+            this.x0 + this.stepX * this.stepSize,this.y0 + this.stepY * this.stepSize,
+            this.personWidth,this.personHeight
+            );
+            if(this.index >= 3){
+                this.index = 0;
+            }
+        }
+        new Person();
+    </script>
+</body>
+
+</html>
